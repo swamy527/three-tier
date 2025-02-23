@@ -1,6 +1,7 @@
 networks:
-  mananet:
+  mynet:
     driver: bridge
+    name: mynet
 
 services:
   frontend:
@@ -10,16 +11,21 @@ services:
       - "80:80"
     depends_on:
       - backend
+    networks:
+      - mynet
 
   backend:
     image: dockerswaha/backend_transaction:v1  # Replace with your actual backend image
     container_name: backend
     depends_on:
       - mysql
-
+    networks:
+      - mynet
   mysql:
     image: mysql:5.7.44
     container_name: mysql
+    networks:
+      - mynet
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: mybase
